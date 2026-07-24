@@ -157,7 +157,6 @@ get_alter_backend_port() {
 
 get_urls() {
   get_mysql_root_password
-  get_link_git
   get_instancia_add
   get_max_whats
   get_max_user
@@ -240,5 +239,3 @@ inquiry_options() {
     *) exit ;;
   esac
 }
-
-
