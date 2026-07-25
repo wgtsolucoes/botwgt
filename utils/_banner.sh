@@ -24,13 +24,13 @@ print_banner() {
 printf "${YELLOW}";
 
 
-printf ${YELLOW}"         SISTEMA PARA MÚLTIPLOS ATENDIMENTOS \n" 
+printf ${YELLOW}"         SISTEMA WGT-BOT DE ATENDIMENTOS \n" 
 printf ${GREEN}"\n"
-printf ${GREEN}" M   M  U   U  L      TTTTT  III  ZZZZZ      A     PPPP \n"
-printf ${GREEN}" MM MM  U   U  L        T     I      Z      AAA    P   P \n"
-printf ${GREEN}" M M M  U   U  L        T     I     Z      AAAAA   PPPP  \n"
-printf ${GREEN}" M   M  U   U  L        T     I    Z       A   A   P     \n"
-printf ${GREEN}" M   M   UUU   LLLLLL   T    III  ZZZZZ    A   A   P     \n"
+printf ${GREEN}" W   W  GGG   TTTTT       BBBB   OOO  TTTTT \n"
+printf ${GREEN}" W   W G       T          B   B O   O   T   \n"
+printf ${GREEN}" W W W G  GG   T    ---   BBBB  O   O   T   \n"
+printf ${GREEN}" W W W G   G   T          B   B O   O   T   \n"
+printf ${GREEN}"  W W   GGG    T          BBBB   OOO    T   \n"
 printf "\n" 
                                                                                                                                                          
   printf "            \033[1;33m        ";
