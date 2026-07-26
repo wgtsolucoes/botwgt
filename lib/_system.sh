@@ -89,7 +89,18 @@ system_update() {
 
   sudo su - root <<EOF
   apt -y update
-  sudo apt-get install -y libxshmfence-dev libgbm-dev wget unzip fontconfig locales gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
+  # instala primeiro, isoladamente, os pacotes que o instalador depende
+  # diretamente (unzip é usado logo em seguida para extrair o Multizap).
+  # Isso evita que um nome de pacote legado/renomeado no Ubuntu 22.04/24.04
+  # (ex: libgconf-2-4, libappindicator1, libgcc1) derrube o apt-get inteiro
+  # e deixe o unzip sem instalar silenciosamente.
+  apt-get install -y wget unzip ca-certificates fontconfig locales lsb-release xdg-utils
+  # o restante das dependências legadas do Puppeteer/Chromium: instala
+  # pacote a pacote, ignorando os que não existem mais nessa versão do
+  # Ubuntu, em vez de falhar tudo de uma vez.
+  for pkg in libxshmfence-dev libgbm-dev gconf-service libasound2 libasound2t64 libatk1.0-0 libc6 libcairo2 libcups2 libcups2t64 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgcc-s1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 fonts-liberation libappindicator1 libappindicator3-1 libnss3; do
+    apt-get install -y "\$pkg" 2>/dev/null || true
+  done
 EOF
 
   sleep 2
@@ -381,49 +392,10 @@ system_puppeteer_dependencies() {
   sleep 2
 
   sudo su - root <<EOF
-  apt-get install -y libxshmfence-dev \
-                      libgbm-dev \
-                      wget \
-                      unzip \
-                      fontconfig \
-                      locales \
-                      gconf-service \
-                      libasound2 \
-                      libatk1.0-0 \
-                      libc6 \
-                      libcairo2 \
-                      libcups2 \
-                      libdbus-1-3 \
-                      libexpat1 \
-                      libfontconfig1 \
-                      libgcc1 \
-                      libgconf-2-4 \
-                      libgdk-pixbuf2.0-0 \
-                      libglib2.0-0 \
-                      libgtk-3-0 \
-                      libnspr4 \
-                      libpango-1.0-0 \
-                      libpangocairo-1.0-0 \
-                      libstdc++6 \
-                      libx11-6 \
-                      libx11-xcb1 \
-                      libxcb1 \
-                      libxcomposite1 \
-                      libxcursor1 \
-                      libxdamage1 \
-                      libxext6 \
-                      libxfixes3 \
-                      libxi6 \
-                      libxrandr2 \
-                      libxrender1 \
-                      libxss1 \
-                      libxtst6 \
-                      ca-certificates \
-                      fonts-liberation \
-                      libappindicator1 \
-                      libnss3 \
-                      lsb-release \
-                      xdg-utils
+  apt-get install -y wget unzip fontconfig locales ca-certificates lsb-release xdg-utils
+  for pkg in libxshmfence-dev libgbm-dev gconf-service libasound2 libasound2t64 libatk1.0-0 libc6 libcairo2 libcups2 libcups2t64 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgcc-s1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 fonts-liberation libappindicator1 libappindicator3-1 libnss3; do
+    apt-get install -y "\$pkg" 2>/dev/null || true
+  done
 EOF
 
   sleep 2
