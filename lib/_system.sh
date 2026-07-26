@@ -71,8 +71,13 @@ system_unzip_Multizap() {
   unzip /home/deploy/${instancia_add}/Multizap.zip -d /home/deploy/${instancia_add}
 EOF
 
+  # garante a posse correta dos arquivos extraídos, independente de quem
+  # de fato rodou o unzip acima (em algumas VPS o heredoc "sudo su - deploy"
+  # não muda o usuário corretamente e os arquivos saem como root:root,
+  # quebrando o build/npm que roda como deploy mais adiante).
+  sudo chown -R deploy:deploy /home/deploy/${instancia_add}/
   sudo chmod -R 777 /home/deploy/${instancia_add}/backend/public/
-  sleep
+  sleep 2
 }
 
 #######################################
